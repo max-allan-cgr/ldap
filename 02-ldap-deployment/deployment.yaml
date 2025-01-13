@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ldap
+  labels:
+    app: ldap
+    app.kubernetes.io/name: ldap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ldap
+  template:
+    metadata:
+      labels:
+        app: ldap
+        app.kubernetes.io/name: ldap
+    spec:
+      containers:
+      - name: ldap
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        image: cgr.dev/chainguard-private/openldap:latest-dev
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 389
+          name: ldap
+          protocol: TCP
+        - containerPort: 636
+          name: ldaps
+          protocol: TCP
+        resources: {}
+        # securityContext:
+        #   allowPrivilegeEscalation: false
+        #   capabilities:
+        #     drop:
+        #     - ALL
+          # readOnlyRootFilesystem: false
+        volumeMounts:
+          - mountPath: /var/lib/openldap/openldap-data
+            name: ldap-data 
+          - name: cacerts
+            mountPath: /etc/ssl/certs/ca-certificates.crt
+            subPath: trust-bundle.pem
+          - name: ldaps
+            mountPath: /etc/ssl/ldaps
+          - name: slapd
+            mountPath: /etc/openldap/slapd.conf
+            subPath: slapd.conf
+      volumes:
+        - name: ldap-data
+          emptyDir: {}
+        - name: cacerts
+          configMap:
+            name: example-bundle 
+        - name: ldaps
+          secret:
+            secretName: ldaps
+        - name: slapd
+          configMap:
+            name: slapd 

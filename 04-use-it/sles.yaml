@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: sles
+  name: sles
+spec:
+  containers:
+    - image: sles:k8s
+      name: sles
+      resources: {}
+      volumeMounts:
+        - name: cacerts
+          mountPath: /var/lib/ca-certificates/ca-bundle.pem
+          subPath: trust-bundle.pem
+        - name: ldaps
+          mountPath: /etc/ssl/ldaps    
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+  volumes:
+    - name: cacerts
+      configMap:
+        name: example-bundle 
+    - name: ldaps
+      secret:
+        secretName: ldaps

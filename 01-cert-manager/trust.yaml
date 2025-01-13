@@ -1,0 +1,5 @@
+imagePullSecrets:
+  - name: "cgrcred"
+image:
+  repository: cgr.dev/chainguard-private/trust-manager
+  tag: latest-dev
