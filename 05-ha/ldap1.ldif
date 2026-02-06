@@ -1,0 +1,15 @@
+
+
+dn: cn=config
+changetype: modify
+replace: olcServerID
+olcServerID: 1
+
+
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+add: olcSyncRepl
+olcSyncRepl: rid=001 provider=ldap://ldap2:389 binddn="cn=manager,dc=my-domain,dc=com" bindmethod=simple credentials=secret searchbase="dc=my-domain,dc=com" type=refreshAndPersist retry="5 5 30 5" timeout=1
+-
+add: olcMirrorMode
+olcMirrorMode: TRUE
