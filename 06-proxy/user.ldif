@@ -1,0 +1,47 @@
+dn: dc=my-domain,dc=com
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+dc: my-domain
+o: Example Organization
+
+dn: ou=People,dc=my-domain,dc=com
+objectClass: organizationalUnit
+ou: People
+
+dn: ou=Groups,dc=my-domain,dc=com
+objectClass: organizationalUnit
+ou: Groups
+
+dn: cn=Engineering,ou=Groups,dc=my-domain,dc=com
+cn: Engineering
+objectClass: posixGroup
+gidNumber: 20100
+memberUid: user1
+
+dn: uid=user1,ou=People,dc=my-domain,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: user1
+sn: One
+givenName: User
+cn: User One
+displayName: User One
+uidNumber: 20001
+gidNumber: 20100
+loginShell: /bin/bash
+homeDirectory: /home/user1
+shadowMin: 0
+shadowMax: 2
+shadowWarning: 1
+userPassword: password
+shadowLastChange: 19261
+
+dn: uid=proxy,dc=my-domain,dc=com
+objectClass: inetOrgPerson
+uid: user1
+sn: One
+givenName: User
+cn: User One
+userPassword: secret

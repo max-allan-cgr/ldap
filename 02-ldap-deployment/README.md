@@ -23,8 +23,8 @@ kubectl apply -f deployment.yaml
 
 To test what you have so far run:
 ```
-kubectl exec $(kubectl get pod -L ldap -o name) -- ldapwhoami -H ldaps://ldap-service -x
-kubectl exec $(kubectl get pod -L ldap -o name) -- ldapwhoami -H ldap://ldap-service -x -ZZ
+kubectl exec $(kubectl get pod -l app=ldap -o name) -- ldapwhoami -H ldaps://ldap-service -x
+kubectl exec $(kubectl get pod -l app=ldap -o name) -- ldapwhoami -H ldap://ldap-service -x -ZZ
 ```
 Both should return "anonymous"
 
@@ -33,7 +33,7 @@ That proves TLS is set up right. `-ZZ` upgrades a non-TLS ldaps connection to TL
 
 This should do a similar check but with the user details we passed in slapd.conf:
 ```
-kubectl exec $(kubectl get pod -L ldap -o name) -- ldapwhoami -H ldaps://ldap-service -D cn=Manager,dc=my-domain,dc=com -w secret 
+kubectl exec $(kubectl get pod -l app=ldap -o name) -- ldapwhoami -H ldaps://ldap-service -D cn=Manager,dc=my-domain,dc=com -w secret 
 ```
 
 # If it goes wrong
